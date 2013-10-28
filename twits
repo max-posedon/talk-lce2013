@@ -1,0 +1,284 @@
+* I'm at #linuxcon europe 2013 in Edinburgh!
+ . 2 sponsors from Belarus on #linuxcon europe - Wargaming and Sam Solutions http://pic.twitter.com/NhCAcRoSMl
+
+* Intro, by Jim Zemlin
+ . Xen and KVM under the same roof after so many years - Jim Zemlin (OVA now collaborative project in Linux Foundation)
+ . Zemlin shares his thoughts on today's news that @OVAorg is becoming an LF Collaborative Project: http://bit.ly/18BxSIg
+ . best way to use Linux - is via collaborate development
+ . twitter has 100 public repos on github
+ . for every $1 spent on AWS, up to $4 not being spent on traditional IT -> extrapolate!
+ . Cloud providers aren't provisioning servers by the rack -- they're provisioning servers by the acre!
+ . 1B html5 capable browsers, 2M web developers writing apps
+ . gaming industry towards Linux and Open Source
+ . In mobile everyone is grabbing Linux and open source and focusing on high levels of innovation, not commodity R&D
+ . ZOMBIE PENGUINS! AAAAHHHH!
+ . It's the end of the OS era. Abstraction is the new disruptor; separating hardware from software layer.
+ . people now laugh *before* Jim's joke about Linux on desktop, but we shouldn't give up
+ . Zemlin: Insert joke abt "year of Linux desktop" but don't give up hope. HTML5, apps, games, OEM support=all getting better.
+ . huge talent war for developers
+ . We need more lawyers who understand open source and collaboration.
+ . Linux Foundation: some sponsors here only to recruit
+ . We need more developers in Linux and OSS. LF will roll out more programs to meet demand. http://pic.twitter.com/7lIncZwJv2
+ . Linux - code as poetry, better, faster, cheaper.
+ . Linux is 95.2% on top 500 supercomputers list
+
+* Mark Hinkle from Citrix talks about Linux
+ . We won http://pic.twitter.com/Lwn2iJtBKo
+ . even oss tools & collaboration models are cool - being used in new & different domains.
+ . FOSS sharing model will be adopted by governments & helsthcare as a way of working
+ . Linux is running supercomputers, smartphones etc; not bad for a hobby that "won't be big or professional like GNU."
+ . oss not a zero-sum game - companies add value on top of it.
+ . People are taking Linux and open source tools and finding ways to innovate in different categories.
+ . CERN LHC creates 30 petabytes of data a year
+ . Linux and OSS devs are setting the standard for the way tech will be developed in the 21st century.
+ . We won, now what? Let's take the ideas of open source and apply to a different field: medicine. http://pic.twitter.com/zssnvYbuov
+ . Linux - platform for innovation
+ . Let opensource culture be a lesson not just for software .... The future is open
+ . using oss to solve problems other domains: medicine, energy, etc.
+ . The future is open and it's our responsibility to share what we know with other people.
+
+* Evolution Of The Twitter Stack by @cra
+ . 500M tweets a day, 6k tweets a second, 145k tps in peak
+ . failure is an option
+ . "throwing machines on problem" isn't the best solution, twitter at LinuxCon
+ . Twitter is of course all running on Linux, why would you need anything else? http://pic.twitter.com/JqJTjKVXze
+ . Keynote at from @cra talking about the bad design that used to be in Twitter and bring the whale. Basically describing Fronter.
+ . Twitter find solution for their problem - JVM, decomposing the monolith but monorail (ruby on rails) still exists
+ . zipkin - gives you a visual representation where most of the time fulfill in request
+ . Mesos, Linux and cgroups - reshare cluster dinamically
+ . twitter have 2000+ employees, half of them are engineers
+ . twitter lessons: Embrace open source, Incremental change always wins,  Data center as computer
+
+* application-level tracing and debugging tools
+ . Breeze lets you compare applications.
+ . breeze profiling file io - file system, networking, power and memory issues: match physical resource with application stats
+ . gdb, valgrind - instruction level debuggers fine, but difficult to get an overview and measurement can change app behavior
+ . undo takes snapshots and you can run your program backwards, aliena DDT can debug parallel code across many machines
+ . strace, ltrace (ptrace) - solve some problems, but don't cope well with large applications
+ . LD_PRELOAD - powerful interface that can trace and control application
+ . yocto project uses LD_PRELOAD tool called PSeudo ('sudo') to fake root access
+ . glibc can have multiple version of same function, this is even more complicated when another preload library is used
+ . system design becomes more complicated - multi machine jobs, suspend/resume, virtualization, custom stack with one VM per app
+ . tracing problems - heterogeneous usecase, that to measure
+ . we all know about Design For Test - what about Design For Profiling ?!
+ . Big Data - monitoring everything and correlate, difficult to get fine-grain coverage without harming performance
+ . cloud computing makes profiling even more complex
+ . LTTng - nice tracing solution for Linux
+
+* Architectural Changes in NetworkManager, Pavel Simerda
+ . http://pic.twitter.com/EHqZiYmOmx
+ . network manager is about changing configuration on-the-fly and making notification to all applications
+ . network manager was redesigned for server: use cases, making desktop behavior more optimal, don't brake other tools configuration
+ . interesting question: what should be done, when NetworkManager restarts?
+ . Network Manager runtime configuration; ipv4/ipv6; DNS; api and tools - a lot of abilities to configure your interfaces
+ . NetworkManager still have a lot of problems with ipv6, some kernel features still missing
+
+* Exploring The Dustier Corners of System Firmware, @mjg59
+ . you could think about firmware as about vendor "policy", sometimes it is the only one difference between devices
+ . OS kernel and firmware basically do same task - device management, but kernel never knows what firmware do
+ . acpi 5.0 would help a bit to "speak" with firmware
+ . a lot of problems with firmware - even the reconfiguration of serial(debug) interface on devices
+ . _PLD - Physical Device Location, colour, location, shape, size, etc. Linux use it just to indicate is device is removable
+ . firmware could help to log kernel crashes (pstore)
+ . (WMI) Windows Management Instrumentation - easiest call firmware from Windows, commonly used for vendor extensions
+ . "Don't do as I do, just do as I say"
+ . reading specs ACPI and UEFI - not the most efficient techniques, your device may be don't support feature, what you want
+ . find interesting device in /sys/bus/acpi/devices/, and acpidump acpixtract, lasl -d and follow http://lwn.net/Articles/367630/ …
+ . specs are rarely written with Linux in mind, they written by vendor to solve their problems, and they do it in their own way
+ . every vendor has his own method to speak with firmware
+ . and future could be "web api" calls to BMC, but putting xml-based ipc to kernel?! that will be crazy
+ . UEFI have a lot of interesting things, which helps to figure out what devices you have, and what they do
+
+* Grand Unification of ACPI-based device Hot-Plug, Rafael J. Wysocki
+ . ACPI - rules for communication between platform firmware and the OS
+ . ACPI Machine Language (AML), ACPI Source Language (ASL), ACPI Namespace - hierarchical structure containing data and code
+ . kernel could speak with device directly (good case) or via ACPI and AML Interpreter (bad case)
+ . ACPI Hot-Plug Notification Values - Bus Check, Device Check, Eject Request, Device Check Light
+ . ACPI Hotplug summary: http://pic.twitter.com/RaCIvhJR7X
+ . with ACPI hot-plug allows you to add/remove even CPU and Memory, and this where request notifications are very important
+
+* snapshots of ram in oVirt
+ . system checkpoint - disk snapshot + memory snapshot
+ . oVirt could reuse memory snapshots, helps when you "fork" big virtual machines
+ . libvirt have interesting feature - preview snapshots, checking "backups" is same important as doing backups :) ...
+
+* Next Generation Cloud Platforms, Mac Devine
+ . we are API generation developers...
+ . there are so many new challenges and opportunities for IT and for developers: new frameworkd, devices, requirements, apis
+ . Rise in mobile and "app economy" is propelling significant changes across IT. http://pic.twitter.com/veIU45ZQAN
+ . a cloud service is only as good as its API, if your data not visible to open ecosystem - nobody will know about you
+ . "Cloud first" mentality is starting to prevail. We want tech to be developed and deployed at "cloud speed."
+ . CEOs now identify technology as the most important external force impacting their organizations
+ . Don't afraid of mistakes, afraid of not learning on them, @mac_device at linuxcon
+ . big data optimized to be easy and fast accessable from softlayer
+ . Simplicity wins. The easier to consume, the more likely it'll be consumed. We don't want to work to get value.
+
+* LinuxCon Panel: What's the next generation cloud platform?
+ . All about APIs: quality, management.
+ . Steve Chambers: It's hard for people to give up control. To open up tech & let people do w/ it what they want.
+ . Rich Miller: We've got a "give to get" model for code, but not for data itself. t.co/fDoSVplEg1
+ . The internet of things is a Pandora's box. How to adapt to diff geos, create predictability and scalability.
+
+* Samsung R&D Innovation with Open Source Development, Yannick Pellet (@yapellet)
+ . Samsung is #7 contributor in Linux kernel development
+ . Open Source Involvement: consumer => collaborator => contributor => leadership and innovation
+ . In past 5 yrs Samsung has moved from being a consumer of open source to being a big contributor to open source
+ . you should not only combine open source and commercial products, but also do education (academia) work
+ . We're bldg an environment for open source; encourage upstream contributions, event participation. http://pic.twitter.com/BRDOEs58M5
+
+* Linux Kernel developer panel
+ . kernel guys don't want separate schedule per arch, even for powermanagent reasons for arm
+ . http://pic.twitter.com/jpfakKOWdM
+ . All the work that enterprise systems did has helped embedded, e.g. IBM Numa has paid off for ARM.
+ . kernel developers put private emails directly to /dev/null, write to maillists instead, please
+ . How to get started? The community is friendly. Ask specific questions. Always ask on the list.
+ . If you submit code, be around to maintain it. Be part of the community in a way that builds trust.
+ . device-tree is still flame tohttp://pic.in arm world
+ . Nobody is in complete agreement on device trees. We have to describe it somehow but it's getting more complex.
+ . On security: if you report a problem we'll fix it ASAP. Is there a better process than that? Let us know.
+ . There will always be fixes. Linux changes because the world changes.
+ . http://pic.twitter.com/wENNEHEZwb
+ . How do you get better? Reading code is a really good way to learn.
+ . Patching code written by you 10yrs ago ends up with reviewers telling you that you clearly have no idea what you are doing
+ . Lol'd at Jim Zemlin telling Greg Kroah-Hartman that he wouldn't be coming out of retirement to fix 2038 prob cos he can't retire.
+
+* systemd nspawn, Lennart Poettering
+ . systemd-nspawn was written originally for testing purpose, lxc and other was overkill for such task
+ . most distros have "one line" command to bootstrap os image, and nspawn could run it "next line"
+ . systemd-nspawn demo goes successfully, but one small bug onhided
+ . machinectl - management interface to nspawn and other cgroups virtualizations
+ . there are still few bugs in linux kernel. systemd, fedora which going to be fixed before fedora20
+
+* Linus Torvalds (and Dirk Hohndel)
+ . Linux 3.12 is about one week away. http://pic.twitter.com/yhPSeEaUJS
+ . Linus is happy that few latest linux kernel releases hadn't big problems
+ . Linus Torvalds: Don't hurry your code. Make sure it works well and is well designed. Don't worry about timing.
+ . the most important thing in maintainer, not tech skills, but responsibility
+ . How to become a maintainer? Be reliable and let people know you are reliable.
+ . the good thing about technology is that when you do something wrong you can fix it 
+ . Developers are slightly moronic woodland creatures, Linus Torvalds
+ . Companies that learn to work with the kernel and get things upstream will waste less time and work better.
+ . Linus, "I use Open Source because it's fun and it works!"
+ . Linux desktop is a morass of infighting and people who do bad things
+ . Linus on concerns for Linux: we don't have technical issues, we have social interaction problems, process issues.
+ . :) "I do linux because I want to see it work on a desktop." - Linus Torvalds
+ . Linus Torvalds: The core kernel is solid. The new and exciting ideas are on the periphery.
+ . Linus Torvalds: Open source is the right way to do complicated systems and get things right. http://pic.twitter.com/p1nsdMncar
+ . Linus Torvalds: The kernel's job is to be a really stable platform for getting real work done, which always comes from outside.
+ . Linus Torvalds: I love the Steam announcements. I think that's an opportunity that could help Linux on the desktop.
+ . Linus Torvalds: There are few women in the community, but I am not very pessimistic. We can fix it. It'll take time
+ . Dirk Hohndel: What will it take for you to retire? Linus Torvalds: If it gets boring or I can't cope, I'll retire.
+ . Linus Torvalds: What's the plan for Linux? It's like evolution in biology, there's no end plan. What works is what survives.
+ . 10 Best Quotes from Linus Torvalds' Keynote at #LinuxCon Europe http://bit.ly/18JYuqJ 
+
+*  Living in a Surveillance State - Mikko Hypponen
+ . wholesale blanket surveillance. on everyone.
+ . Hyponnen: But actually, some surveillance is ok. Investigations into drug lords, terrorist cells, etc.
+ . http://pic.twitter.com/bXzgHbOxJK
+ . Today, data is cheap. We can keep everything. This enabled wholesale blanket surveillance. http://pic.twitter.com/RHypy5OlBK
+ . "Perhaps people are more honest with their search engine than with anyone else in their lives."
+ . Hypponen: Argument: "I have nothing to hide." But it's not about what you send, it's about your privacy.
+ . "The Internet has become a colony of the United States."
+ .  countries could fight with US services together - doing Open Source
+ . To fight these problems, use open source. Let's work together
+
+* Multi-layered Web Security with Konstantin Ryabitsev
+ . Why multiple layers - we are all made out of meat, fail gracefully, do risk-benefit analysis, handling money
+ . cross-site violation, code injections, privilege escalation - so may places to fail
+ . XXSS - r/w cookies, executate commands, propagate malware, modify content
+ . XSS fix: encode all user content, strip all tags, cast all integers, don't try to "filter out bad html"
+ . store in database filtered and non-filtered data, 2nd one was useful when you regenerate filtered with new fixed filters
+ . PHP: Strip all tags, without exceptions
+ . cross-site-request-forgery: users have tab-introduced ADD
+ . XSRF:Fix - requests scrutiny, tokens, referrer, post
+ . SQL Injection: access to back-end database
+ . sql injections fix: parametrized statements, escaping routines, cast integers
+ . could to have multiple db users - r/o, r/w, r/w to admin fields
+ . shell injection - filter user input, or better (sic!) don't execute shell command
+ . code injections - templates, eval, unserialize, include with user input, upload files to web root
+ . try to avoid templates that work via eval(), be careful about file uploads
+ . cookies: session hijacking; fix - identifiers are random, never IDs in URLs, secure cookies, httponly cookies
+ . re-initialize the session after authentication, never accept session identifiers in GET/POST
+ . encryption is easy to get wrong
+ . do not use md5sum or sha1sum, use sha256/sha512, use sallet password, consider OAuth
+ . personal questions are backdoors to your system
+ . captchas help again bots (a bit), but expiring token help better
+ . templating system are just bad, keep an eye
+ . SELinux is first and foremost a labeling system - every file has a context, everything is file, must be allowed to transaction
+ . SELinux - start with permissive mode
+ . ausearch, audit2why, audit2allow - can solve nearly all your problems
+ . ModSecurity - Web Application Firewall - analysis of http traffic at apache level, stop attacks before they go to app
+ . but ModSecurity is not a silver bullet, and it even more complex than SELinux...
+ . most "vulnerability scanners" will only check well known software and bugs
+ . security trade-off in terms of: effort, money, usability
+ . be prepared when things fail
+
+* Qt Project 2 Years Later, Thiago Macieira
+ . Qt has long line to openness, from QPL till GPLv3
+ . Qt openness motivation: desire to really be an open project - fix problems with 2009 contribution model and development workflow
+ . Qt goals: one workflow for everyone, regardless of employer; reliable CI; co-exists with commercial businesses
+ . Qt project principles: Fair, Transparent, Inclusive, Meritocratic
+ . qt3d and qtwayland will be merged to qt some day, but they require some work now
+ . qt - 450 commits/week
+ . 75% of qt contributions comes from digia now, and 25% from other companies and individuals
+ . but of course, loss after nokia changes was quite big - about 25%
+ . face-to-face meeting really helps broke the ice
+
+* OSv, Glauber Costa, Avi Kivity
+ . hardware +application +operation system +hypervizor +managed language
+ . app | app server | jvm | OS | hypervisor | OS | hardware
+ . jvm, operation system, hypervizor - do same job, wtf?!
+ . too many layers, to little value - so a lot of duplication
+ . vmware: private => virtual; amazon: compute node != virtual server; and now "crazy" scalability problems
+ . people don't update OS in VM now, they just upload new system image with APP and OS
+ . no hardware, no users, no apps - most features of Linux just not used in current production
+ . OSv mission - be the best OS powering virtual machines in the cloud
+ . OSv runs application in kernel space! and api not changed for the app
+ . Be the best OS powering virtual machine in the cloud
+ . hypervizor OS has nice feature - you don't need to write so much drivers
+ . JVM Memory: lend memory to system memory
+ . memcached runs 40% better on OSv than native - I want check it myself!
+ . OSv runs Java, JRuby, Scala, Groovy, Clojure, JavaScript
+ . credibility == open source these days
+ . OSv runs on kvm, xen hvm (still work in progress), vmware - planned
+ . OSv - Integrating the JVM into the kernel - dynamic heap memory, tcp in jvm+app context, faster inter thread
+ . jvm won't track memory changes in OSv, it will just ask page tables
+ . virtio-app - bypass I/O stack completely - consume data from virtio rings
+ . virtualization 2.0 - stateless servers
+ . jvm application doesn't requires anything to run in OSv (if it doesn't work)
+ . OSv could run your C apps, when they single-process app, rebuild as share library, not fork and exec.
+
+* Containers and the Cloud, @jejb_
+ . virtualization was so much hyped in 2005, the Linux Kernel was forked by the distributions to accommodate Xen
+ . while the enterprise charged down the Hypervisor alley, the Hosting market turned to Containers
+ . concontainers - its all about density
+ . containers vs hypervisors - you know everything about it already, I think
+ . linux containers comes from virtuozzo from Parallels, Cgroups from Google, Dpar from IBM, namespaces from Eric Biederman
+ . may be someday containers tools will be merged
+
+* GlusterFS workshop
+ . simplicity, scalability and economics of open source storage at Gluster Day #LinuxCon
+ . http://pic.twitter.com/9c9WA7LTs5
+ . gluster is a unified, distributed storage system - user space, global namespace, stackable, everything is file
+ . glusterfs clients - fuse, NFSv3 and Libgfapi for kvm, samba
+ . in glusterfs client knows everything about storage nodes, and should implement HA on their side
+ . glusterfs features - no metadata server, multi-protocol access, replication(sync/async), self-healing
+ . glusterfs - is the simplest distribution fs in terms of setting env
+ . glusterfs is mainly for non-structured data - media, shared storage, big data, objects
+ . glusterfs could be nicely integrated to openstack
+ . glusterfs self healing running by special daemons which do node-to-node communications to other healing daemons
+ . glusterfs has HDFS compatibility, gluster faking hdfs api
+ . one more interesting idea - GlusterFS & QEMU and xlator - distributed block storage for VM
+ . quorum enforcement - which node has valid data
+ . glusterfs ovirt interface and rest api exist
+ . glusterfs goal - Intelligent storage, read / write is not enough - transform, mutilate, management required too
+ . Red Hat Storage - glusterfs on rhel + xfs, distribution in appliance way
+ . brick - filesystem mountpoint; translator - logic between the bits and the global namespace, volume - bricks combined and passwed
+ . glusterd - managment daemon, glusterfsd - brick daemon
+ . glusterfs libgfapi - no fuse, no copies, not context switchers
+ . glusterfs  - samba works on top of libgfapi - what improves speed a lot
+ . distributed storage system - see also: ceph, xtreamfs, fhgfs, glusterfs
+ . paradigm changes block -> object, central -> distributed, server -> storage
+ . Gluster Geo-Replication
+ . GlusterFS, qemu, kvm and ovirt
+ . glusterfs libgfapi - improved speed and latency (eliminate fuse), examples - qemu storage layer, samba vfs
